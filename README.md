@@ -33,7 +33,7 @@ dependencyResolutionManagement {
 ### Step 2. Add the dependency
 ```groovy
 dependencies {
-    implementation ("com.github.Radzdevteam:radzweb:tag")
+    implementation ("com.github.Radzdevteam:radzweb:Tag")
 }
 
    ```
