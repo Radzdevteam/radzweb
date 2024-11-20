@@ -1,15 +1,21 @@
-# Radz ExoPlayer
-[![](https://jitpack.io/v/Radzdevteam/RadzExoPlayer.svg)](https://jitpack.io/#Radzdevteam/RadzExoPlayer)
+# Radz Webview
+[![](https://jitpack.io/v/Radzdevteam/radzweb.svg)](https://jitpack.io/#Radzdevteam/radzweb)
 
-Radz ExoPlayer is a media player library developed by Radz, leveraging the powerful ExoPlayer framework.
 
-## Player Supported Formats:
-- HLS (HTTP Live Streaming)
-- M3U8
-- MP4
-- TS
-- DASH (Dynamic Adaptive Streaming over HTTP)
-- TLS (Transport Layer Security)
+## Features:
+
+1. URL Loading Functionality
+2. Ad Blocker Management 
+3. Intent URL Blocking  
+4. Popup and Ad Blocking  
+5. Fullscreen Video Support  
+6. Loading Animation  
+7. Refresh WebView  
+8. Back Navigation  
+9. User-Agent String Management  
+10. Swipe to Refresh  
+11. Handle HTTP Response Codes  
+12. Custom Error Pages
 
 ## How to Include
 ### Step 1. Add the repository to your project settings.gradle:
