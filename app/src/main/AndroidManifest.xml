@@ -13,6 +13,11 @@
         android:theme="@style/Theme.RadzExoPlayer"
         tools:targetApi="31">
 
+
+        <activity android:name="com.radzdev.radzweb.radzweb"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

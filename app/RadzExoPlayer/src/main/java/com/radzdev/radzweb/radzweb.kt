@@ -106,6 +106,9 @@ class radzweb : ComponentActivity() {
         // Declare a variable to hold the fetched ad hosts
         private var adHosts = mutableListOf<String>()
 
+        private val redirectPattern = """(redirect|ref|click|url|go|jump|forward|redir)\?url=([a-zA-Z0-9\-._~:/?#[\\]@!$&'()*+,;%=]+)"""
+
+
         init {
             // Fetch ad hosts from the online source
             fetchAdHosts("https://raw.githubusercontent.com/Radzdevteam/test/refs/heads/main/adhost")
@@ -149,7 +152,7 @@ class radzweb : ComponentActivity() {
                 return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream("".toByteArray()))
             }
 
-            // Regex to block other unwanted URLs
+            // Regex to block unwanted popups and ad URLs
             val popupPattern1 = "^https?://(?:www\\.|[a-z0-9]{7,10}\\.)?[a-z0-9-]{5,}\\.(?:com|bid|link|live|online|top|club)//?(?:[a-z0-9]{2}/){2,3}[a-f0-9]{32}\\.js$"
             val popupPattern2 = "^https?://(?:[a-z]{2}\\.)?[0-9a-z]{5,16}\\.[a-z]{3,7}/[a-z](?=[a-z]{0,25}[0-9A-Z])[0-9a-zA-Z]{3,26}/\\d{4,5}(?:\\?[_v]=\\d+)?$"
 
@@ -165,6 +168,12 @@ class radzweb : ComponentActivity() {
                 return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream("".toByteArray()))
             }
 
+            // Block redirect ad URLs by pattern (directly use redirectPattern without extra `.*`)
+            if (url != null && Regex(redirectPattern).containsMatchIn(url)) {
+                Log.d("WebView", "Blocked redirect ad URL: $url")
+                return WebResourceResponse("text/plain", "UTF-8", ByteArrayInputStream("".toByteArray()))
+            }
+
             return super.shouldInterceptRequest(view, url)
         }
 
@@ -177,8 +186,8 @@ class radzweb : ComponentActivity() {
                     return true // Stop the WebView from loading the intent URL
                 }
 
-                // Check if the URL matches any block patterns (ad hosts, etc.)
-                if (adHosts.any { url.contains(it) }) {
+                // Check if the URL matches any block patterns (ad hosts, redirect URLs, etc.)
+                if (adHosts.any { url.contains(it) } || Regex(redirectPattern).containsMatchIn(url)) {
                     Log.d("WebView", "Blocked page URL: $url")
                     return true // Stop the WebView from loading this URL
                 }
@@ -193,7 +202,7 @@ class radzweb : ComponentActivity() {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             // Ensure the page finishes loading only if it's not a blocked URL
-            if (url != null && adHosts.any { url.contains(it) }) {
+            if (url != null && (adHosts.any { url.contains(it) } || Regex(redirectPattern).containsMatchIn(url))) {
                 Log.d("WebView", "Blocked page from loading: $url")
                 return
             }
